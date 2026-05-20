@@ -9,7 +9,7 @@
 // -------------------------------------------------------
 import { openModal } from './wineui.js';
 import {
-  getHomebase, addAvatarPoints,
+  getHomebase, addAvatarPoints, resetAvatar,
   listFridge, addFridgeWine, deleteFridgeWine,
   listWines, listProducers, addWine, getLeaderboard,
 } from './db.js';
@@ -21,8 +21,10 @@ const COLOR_LABELS = { white: 'White', rose: 'Rosé', red: 'Red' };
 const COLORS = ['white', 'rose', 'red'];
 
 export function initHomebase() {
-  document.getElementById('btn-homebase').addEventListener('click', openHomebase);
-  document.getElementById('btn-podium').addEventListener('click', openPodium);
+  // Null-safe (?.) so a stale cached HTML missing these buttons can't throw
+  // and block the rest of app init (which would keep the login overlay up).
+  document.getElementById('btn-homebase')?.addEventListener('click', openHomebase);
+  document.getElementById('btn-podium')?.addEventListener('click', openPodium);
 }
 
 // -------------------------------------------------------
@@ -89,6 +91,7 @@ function renderHomebase(hb, fridge) {
               <span class="hb-star-label" style="color:${WINE_COLORS[c]}">${COLOR_LABELS[c]}</span>
               ${starsHtml(hb['points_' + c] ?? 0)}
             </div>`).join('')}
+          <button class="hb-reset" id="hb-reset" type="button">Reset drink count</button>
         </div>
       </div>
       <div class="hb-target" id="hb-fridge">
@@ -160,6 +163,17 @@ function wireHomebase(fridge) {
   });
 
   document.getElementById('hb-view-cellar').addEventListener('click', () => showCellar(fridge));
+
+  document.getElementById('hb-reset').addEventListener('click', async () => {
+    if (!confirm('Reset your drink count (white, rosé and red stars) to zero? This cannot be undone.')) return;
+    try {
+      await resetAvatar();
+      const [hb, fr] = await Promise.all([getHomebase(), listFridge()]);
+      renderHomebase(hb, fr);
+    } catch (e) {
+      alert('Could not reset: ' + (e.message || e));
+    }
+  });
 }
 
 function readToken(e) {

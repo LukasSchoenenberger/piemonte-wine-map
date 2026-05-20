@@ -3,6 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Don't cache the HTML shell — it must stay in sync with the cache-busted
+       JS modules, otherwise stale HTML (esp. on iOS Safari) is missing buttons
+       the new JS expects and the app fails to initialise. -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Piemonte Wine Map</title>
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.css">
   <!-- Cache-bust the stylesheet too (the browser otherwise serves a stale

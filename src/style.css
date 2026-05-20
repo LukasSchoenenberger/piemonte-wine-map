@@ -713,6 +713,19 @@ h2 {
 
 .hb-fridge-info { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
 
+.hb-reset {
+  margin-top: 6px;
+  align-self: flex-start;
+  font-size: 10px;
+  color: #9a8070;
+  background: none;
+  border: 1px solid #ddd5c8;
+  border-radius: 3px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+.hb-reset:hover { background: #f0e9df; color: #b03030; }
+
 .hb-tokens {
   display: flex;
   flex-direction: column;

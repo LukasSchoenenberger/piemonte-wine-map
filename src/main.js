@@ -83,18 +83,26 @@ async function tryInit() {
   initProducerSearch();
   initHomebase();
 
-  // Reveal the authed UI
+  // Reveal the authed UI. loginOverlay is hidden first and the rest is
+  // null-safe so a stale cached HTML can never leave the login overlay stuck.
   loginOverlay.hidden = true;
-  document.getElementById('homebase-section').hidden = false;
-  document.getElementById('wine-actions').hidden = false;
-  document.getElementById('producer-actions').hidden = false;
+  show('homebase-section');
+  show('wine-actions');
+  show('producer-actions');
 
   const name = await getMyDisplayName();
-  if (name) {
-    document.getElementById('account-name').textContent = name;
-    document.getElementById('account-row').hidden = false;
+  const nameEl = document.getElementById('account-name');
+  if (name && nameEl) {
+    nameEl.textContent = name;
+    show('account-row');
   }
-  document.getElementById('btn-signout').addEventListener('click', () => signOut());
+  document.getElementById('btn-signout')?.addEventListener('click', () => signOut());
+}
+
+// Reveal a sidebar section by id, if it exists in the (possibly stale) HTML.
+function show(id) {
+  const el = document.getElementById(id);
+  if (el) el.hidden = false;
 }
 
 // -------------------------------------------------------
@@ -157,6 +165,7 @@ let _highlightMarker = null;
 function initProducerSearch() {
   refreshProducerSearchList();
   const input = document.getElementById('producer-search');
+  if (!input) return;   // null-safe against stale cached HTML
   input.addEventListener('change', () => {
     const term = input.value.trim().toLowerCase();
     if (!term) return;

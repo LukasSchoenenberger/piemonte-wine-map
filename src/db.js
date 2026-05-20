@@ -187,6 +187,15 @@ export async function getHomebase() {
   return data ?? { points_white: 0, points_rose: 0, points_red: 0 };
 }
 
+// Reset all three avatar colour tracks to zero.
+export async function resetAvatar() {
+  const uid = await getMyUserId();
+  const { error } = await supabase.from('homebase').upsert(
+    { user_id: uid, points_white: 0, points_rose: 0, points_red: 0 },
+    { onConflict: 'user_id' });
+  if (error) throw error;
+}
+
 // Add points to one colour track (glass = 1, bottle = 5), capped at the max.
 // Returns the new value for that colour.
 export async function addAvatarPoints(color, delta) {

@@ -23,12 +23,13 @@ let _pickCoordinate = null;   // () => Promise<{lat, lon}>, provided by main.js
 export function initWineUI({ onProducersChanged, pickCoordinate } = {}) {
   _onProducersChanged = onProducersChanged;
   _pickCoordinate = pickCoordinate;
-  document.getElementById('btn-add-wine').addEventListener('click', showAddWineModal);
-  document.getElementById('btn-rate-wine').addEventListener('click', showRateWineModal);
-  document.getElementById('btn-glossary').addEventListener('click', showGlossaryModal);
-  document.getElementById('btn-add-producer').addEventListener('click', () => showAddProducerModal());
-  document.getElementById('modal-close').addEventListener('click', closeModal);
-  modalOverlay.addEventListener('click', (e) => {
+  // Null-safe (?.) so a stale cached HTML can't throw here and block app init.
+  document.getElementById('btn-add-wine')?.addEventListener('click', showAddWineModal);
+  document.getElementById('btn-rate-wine')?.addEventListener('click', showRateWineModal);
+  document.getElementById('btn-glossary')?.addEventListener('click', showGlossaryModal);
+  document.getElementById('btn-add-producer')?.addEventListener('click', () => showAddProducerModal());
+  document.getElementById('modal-close')?.addEventListener('click', closeModal);
+  modalOverlay?.addEventListener('click', (e) => {
     if (e.target === modalOverlay) closeModal();
   });
 }
