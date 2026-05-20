@@ -32,6 +32,14 @@
           <button class="wine-btn" id="btn-glossary">Show wine glossary</button>
         </section>
 
+        <section class="sidebar-section" id="producer-actions" hidden>
+          <h2>Producers</h2>
+          <input id="producer-search" class="search-input" type="search"
+                 placeholder="Search producer…" list="producer-search-list">
+          <datalist id="producer-search-list"></datalist>
+          <button class="wine-btn" id="btn-add-producer">+ Add producer</button>
+        </section>
+
         <section class="sidebar-section" id="info-panel" hidden>
           <h2 id="info-title"></h2>
           <div id="info-content"></div>
@@ -50,6 +58,7 @@
     </aside>
 
     <div id="map"></div>
+    <div id="map-banner" hidden></div>
   </div>
 
   <!-- Login gate -->

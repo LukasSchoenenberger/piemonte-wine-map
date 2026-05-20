@@ -3,9 +3,10 @@
 // producer -> wines -> ratings views inside the info panel.
 // -------------------------------------------------------
 import {
-  listProducers, addProducer,
-  listWines, listWinesByProducer, addWine,
+  listProducers, addProducer, deleteProducer,
+  listWines, listWinesByProducer, addWine, deleteWine,
   listRatingsForWine, myRatingForWine, upsertRating,
+  getMyUserId,
 } from './db.js';
 
 const layerSection = document.getElementById('layer-section');
@@ -17,12 +18,15 @@ const modalOverlay = document.getElementById('modal-overlay');
 const modalContent = document.getElementById('modal-content');
 
 let _onProducersChanged = null;
+let _pickCoordinate = null;   // () => Promise<{lat, lon}>, provided by main.js
 
-export function initWineUI({ onProducersChanged } = {}) {
+export function initWineUI({ onProducersChanged, pickCoordinate } = {}) {
   _onProducersChanged = onProducersChanged;
+  _pickCoordinate = pickCoordinate;
   document.getElementById('btn-add-wine').addEventListener('click', showAddWineModal);
   document.getElementById('btn-rate-wine').addEventListener('click', showRateWineModal);
   document.getElementById('btn-glossary').addEventListener('click', showGlossaryModal);
+  document.getElementById('btn-add-producer').addEventListener('click', () => showAddProducerModal());
   document.getElementById('modal-close').addEventListener('click', closeModal);
   modalOverlay.addEventListener('click', (e) => {
     if (e.target === modalOverlay) closeModal();
@@ -183,36 +187,183 @@ async function showRateWineModal() {
 // -------------------------------------------------------
 async function showGlossaryModal() {
   let wines = [];
+  let myId = null;
   try {
-    wines = await listWines();
+    [wines, myId] = await Promise.all([listWines(), getMyUserId()]);
   } catch (e) {
     openModal(`<h2>Wine glossary</h2><p class="modal-error">Could not load: ${esc(e.message)}</p>`);
     return;
   }
-  if (!wines.length) {
-    openModal(`<h2>Wine glossary</h2><p class="modal-empty">No wines yet.</p>`);
-    return;
-  }
-  const rows = wines.map((w) => {
-    const scores = (w.ratings ?? []).map((r) => r.score);
-    const avg = scores.length ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1) : '—';
-    return `<tr>
-      <td>${esc(w.producers?.name ?? '')}</td>
-      <td>${esc(w.name)}</td>
-      <td>${w.year ?? '—'}</td>
-      <td class="num">${avg}</td>
-      <td class="num">${scores.length}</td>
-    </tr>`;
-  }).join('');
+
+  let search = '';
+  let sort = 'wine';
 
   openModal(`
     <h2>Wine glossary</h2>
-    <table class="glossary-table">
-      <thead><tr><th>Producer</th><th>Wine</th><th>Year</th><th class="num">Avg</th><th class="num">#</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>
+    <div class="glossary-controls">
+      <input id="gl-search" class="search-input" type="search" placeholder="Search wines or producers…">
+      <select id="gl-sort">
+        <option value="wine">Sort: A–Z (wine)</option>
+        <option value="producer">Sort: producer</option>
+        <option value="year">Sort: year (newest)</option>
+        <option value="rating">Sort: rating (highest)</option>
+      </select>
+    </div>
+    <div id="gl-table"></div>
   `);
+
+  const tableEl = document.getElementById('gl-table');
+
+  function render() {
+    tableEl.innerHTML = glossaryTableHtml(wines, myId, search, sort);
+    tableEl.querySelectorAll('.wine-del').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        if (!confirm('Delete this wine and all its ratings? This cannot be undone.')) return;
+        try {
+          await deleteWine(btn.dataset.id);
+          wines = await listWines();
+          render();
+        } catch (e) {
+          alert('Could not delete: ' + (e.message || e));
+        }
+      });
+    });
+  }
+
+  document.getElementById('gl-search').addEventListener('input', (e) => {
+    search = e.target.value.toLowerCase();
+    render();
+  });
+  document.getElementById('gl-sort').addEventListener('change', (e) => {
+    sort = e.target.value;
+    render();
+  });
+  render();
 }
+
+function glossaryTableHtml(wines, myId, search, sort) {
+  const withAvg = wines.map((w) => {
+    const scores = (w.ratings ?? []).map((r) => r.score);
+    const avg = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : null;
+    return { ...w, _scores: scores.length, _avg: avg, _producer: w.producers?.name ?? '' };
+  });
+
+  const filtered = search
+    ? withAvg.filter((w) =>
+        w.name.toLowerCase().includes(search) || w._producer.toLowerCase().includes(search))
+    : withAvg;
+
+  filtered.sort((a, b) => {
+    switch (sort) {
+      case 'producer':
+        return a._producer.localeCompare(b._producer) || a.name.localeCompare(b.name);
+      case 'year':
+        return (b.year ?? -Infinity) - (a.year ?? -Infinity) || a.name.localeCompare(b.name);
+      case 'rating':
+        return (b._avg ?? -Infinity) - (a._avg ?? -Infinity) || a.name.localeCompare(b.name);
+      default: // wine A-Z
+        return a.name.localeCompare(b.name);
+    }
+  });
+
+  if (!filtered.length) {
+    return '<p class="modal-empty">No matching wines.</p>';
+  }
+
+  const rows = filtered.map((w) => {
+    const del = w.created_by && w.created_by === myId
+      ? `<button class="wine-del" data-id="${w.id}" title="Delete wine">&times;</button>`
+      : '';
+    return `<tr>
+      <td>${esc(w._producer)}</td>
+      <td>${esc(w.name)}</td>
+      <td>${w.year ?? '—'}</td>
+      <td class="num">${w._avg == null ? '—' : w._avg.toFixed(1)}</td>
+      <td class="num">${w._scores}</td>
+      <td class="del-cell">${del}</td>
+    </tr>`;
+  }).join('');
+
+  return `<table class="glossary-table">
+    <thead><tr><th>Producer</th><th>Wine</th><th>Year</th><th class="num">Avg</th><th class="num">#</th><th></th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+// -------------------------------------------------------
+// Add producer (dedicated form with coordinates)
+// -------------------------------------------------------
+export function showAddProducerModal(initial = {}) {
+  openModal(`
+    <h2>Add producer</h2>
+    <form id="add-prod-form" class="wine-form">
+      <label>Name <input id="ap-name" type="text" required value="${escAttr(initial.name ?? '')}"></label>
+      <label>Commune <input id="ap-commune" type="text" value="${escAttr(initial.commune ?? '')}"></label>
+      <label>DOCG
+        <select id="ap-docg">
+          <option value=""${!initial.docg ? ' selected' : ''}>—</option>
+          <option value="Barolo"${initial.docg === 'Barolo' ? ' selected' : ''}>Barolo</option>
+          <option value="Barbaresco"${initial.docg === 'Barbaresco' ? ' selected' : ''}>Barbaresco</option>
+        </select>
+      </label>
+      <label>Website <input id="ap-website" type="text" placeholder="https://…" value="${escAttr(initial.website ?? '')}"></label>
+      <div class="coord-row">
+        <label>Latitude <input id="ap-lat" type="number" step="any" required value="${initial.lat ?? ''}"></label>
+        <label>Longitude <input id="ap-lon" type="number" step="any" required value="${initial.lon ?? ''}"></label>
+      </div>
+      <button type="button" id="ap-pick" class="secondary-btn">Pick location on map</button>
+      <button type="submit">Save producer</button>
+      <p class="modal-error" id="ap-error" hidden></p>
+    </form>
+  `);
+
+  // Pick on map: stash the current form values, close the modal so the map is
+  // clickable, await a click, then reopen pre-filled with the coordinates.
+  document.getElementById('ap-pick').addEventListener('click', async () => {
+    if (!_pickCoordinate) return;
+    const vals = collectProducerForm();
+    closeModal();
+    const picked = await _pickCoordinate();
+    if (picked.lat == null || picked.lon == null) {
+      showAddProducerModal(vals);                  // cancelled — reopen unchanged
+    } else {
+      showAddProducerModal({ ...vals, lat: round6(picked.lat), lon: round6(picked.lon) });
+    }
+  });
+
+  document.getElementById('add-prod-form').addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const err = document.getElementById('ap-error');
+    err.hidden = true;
+    const v = collectProducerForm();
+    if (!v.name) return showErr(err, 'Name is required.');
+    if (v.lat === null || v.lon === null) return showErr(err, 'Coordinates are required (type them or use "Pick location on map").');
+    try {
+      await addProducer({
+        name: v.name, commune: v.commune, docg: v.docg || null,
+        lat: v.lat, lon: v.lon, website: v.website || null,
+      });
+      if (_onProducersChanged) await _onProducersChanged();
+      closeModal();
+    } catch (e) {
+      showErr(err, e.message || 'Could not save producer.');
+    }
+  });
+}
+
+function collectProducerForm() {
+  const latRaw = document.getElementById('ap-lat').value.trim();
+  const lonRaw = document.getElementById('ap-lon').value.trim();
+  return {
+    name: document.getElementById('ap-name').value.trim(),
+    commune: document.getElementById('ap-commune').value.trim(),
+    docg: document.getElementById('ap-docg').value,
+    website: document.getElementById('ap-website').value.trim(),
+    lat: latRaw ? parseFloat(latRaw) : null,
+    lon: lonRaw ? parseFloat(lonRaw) : null,
+  };
+}
+function round6(n) { return Math.round(n * 1e6) / 1e6; }
 
 // -------------------------------------------------------
 // Producer panel (opened from a producer map click)
@@ -232,8 +383,9 @@ export async function showProducerPanel(props) {
   }
 
   let wines = [];
+  let myId = null;
   try {
-    wines = await listWinesByProducer(props.id);
+    [wines, myId] = await Promise.all([listWinesByProducer(props.id), getMyUserId()]);
   } catch (e) {
     infoContent.innerHTML = `<p class="modal-error">Could not load wines: ${esc(e.message)}</p>`;
     return;
@@ -250,10 +402,17 @@ export async function showProducerPanel(props) {
       }).join('')
     : '<li class="info-empty">No wines yet. Use "Add wine" to add one.</li>';
 
+  // Delete is allowed only for producers the current user created (RLS).
+  const canDelete = props.created_by && props.created_by === myId;
+  const deleteBtn = canDelete
+    ? `<button id="prod-delete" class="danger-btn">Delete this producer</button>`
+    : '';
+
   infoContent.innerHTML = `
     ${meta.length ? `<table class="info-table">${meta.join('')}</table>` : ''}
     <h3 class="panel-subhead">Wines</h3>
     <ul class="wine-list">${wineList}</ul>
+    ${deleteBtn}
   `;
 
   infoContent.querySelectorAll('.wine-item').forEach((li) => {
@@ -262,6 +421,20 @@ export async function showProducerPanel(props) {
       showWineDetail(wine, props);
     });
   });
+
+  if (canDelete) {
+    document.getElementById('prod-delete').addEventListener('click', async () => {
+      if (!confirm(`Delete "${props.name}" and ALL its wines and ratings? This cannot be undone.`)) return;
+      try {
+        await deleteProducer(props.id);
+        if (_onProducersChanged) await _onProducersChanged();
+        infoPanel.hidden = true;
+        layerSection.hidden = false;
+      } catch (e) {
+        alert('Could not delete: ' + (e.message || e));
+      }
+    });
+  }
 }
 
 // -------------------------------------------------------

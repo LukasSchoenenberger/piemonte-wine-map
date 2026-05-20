@@ -50,10 +50,17 @@ export async function getMyDisplayName() {
 export async function listProducers() {
   const { data, error } = await supabase
     .from('producers')
-    .select('id, name, commune, docg, lat, lon, website')
+    .select('id, name, commune, docg, lat, lon, website, created_by')
     .order('name');
   if (error) throw error;
   return data;
+}
+
+export async function deleteProducer(id) {
+  // RLS allows deleting only your own producers. Cascades to that producer's
+  // wines (and their ratings) via the FK on delete cascade.
+  const { error } = await supabase.from('producers').delete().eq('id', id);
+  if (error) throw error;
 }
 
 export async function addProducer({ name, commune, docg, lat, lon, website }) {
@@ -82,10 +89,16 @@ export async function listWines() {
   // Each wine with its producer and the list of scores (for averages).
   const { data, error } = await supabase
     .from('wines')
-    .select('id, name, year, producer_id, producers(name), ratings(score)')
+    .select('id, name, year, producer_id, created_by, producers(name), ratings(score)')
     .order('name');
   if (error) throw error;
   return data;
+}
+
+export async function deleteWine(id) {
+  // RLS allows deleting only your own wines. Cascades to that wine's ratings.
+  const { error } = await supabase.from('wines').delete().eq('id', id);
+  if (error) throw error;
 }
 
 export async function listWinesByProducer(producerId) {

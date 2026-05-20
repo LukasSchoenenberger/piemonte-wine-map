@@ -78,11 +78,13 @@ async function tryInit() {
   const results = await loadAllLayers();
   initUI(map, results, setLayerVisibility);
   attachClickHandlers(results);
-  initWineUI({ onProducersChanged: reloadProducers });
+  initWineUI({ onProducersChanged: reloadProducers, pickCoordinate: pickCoordinateOnMap });
+  initProducerSearch();
 
   // Reveal the authed UI
   loginOverlay.hidden = true;
   document.getElementById('wine-actions').hidden = false;
+  document.getElementById('producer-actions').hidden = false;
 
   const name = await getMyDisplayName();
   if (name) {
@@ -120,25 +122,95 @@ async function loadAllLayers() {
 
 // Build a point FeatureCollection from the Supabase producers table.
 // Only producers with coordinates appear on the map; the rest still exist
-// in the glossary / dropdowns.
+// in the glossary / dropdowns. Caches the rows for the producer search.
+let _producers = [];
 async function producersGeojson() {
-  const rows = await listProducers();
-  const features = rows
+  _producers = await listProducers();
+  const features = _producers
     .filter((p) => p.lat != null && p.lon != null)
     .map((p) => ({
       type: 'Feature',
       geometry: { type: 'Point', coordinates: [p.lon, p.lat] },
       properties: {
-        id: p.id, name: p.name, commune: p.commune, docg: p.docg, website: p.website,
+        id: p.id, name: p.name, commune: p.commune, docg: p.docg,
+        website: p.website, created_by: p.created_by,
       },
     }));
   return { type: 'FeatureCollection', features };
 }
 
-// Refresh the producers source after a new producer is added.
+// Refresh the producers source after add/delete, plus the search list.
 async function reloadProducers() {
   const src = map.getSource('producers');
   if (src) src.setData(await producersGeojson());
+  refreshProducerSearchList();
+}
+
+// -------------------------------------------------------
+// Producer search: type a name -> fly to + highlight on the map
+// -------------------------------------------------------
+let _highlightMarker = null;
+
+function initProducerSearch() {
+  refreshProducerSearchList();
+  const input = document.getElementById('producer-search');
+  input.addEventListener('change', () => {
+    const term = input.value.trim().toLowerCase();
+    if (!term) return;
+    const match = _producers.find(
+      (p) => p.lat != null && p.lon != null && p.name.toLowerCase() === term
+    ) || _producers.find(
+      (p) => p.lat != null && p.lon != null && p.name.toLowerCase().includes(term)
+    );
+    if (match) highlightProducer(match);
+  });
+}
+
+function refreshProducerSearchList() {
+  const list = document.getElementById('producer-search-list');
+  if (!list) return;
+  list.innerHTML = _producers
+    .filter((p) => p.lat != null && p.lon != null)
+    .map((p) => `<option value="${p.name.replace(/"/g, '&quot;')}"></option>`)
+    .join('');
+}
+
+function highlightProducer(p) {
+  if (_highlightMarker) _highlightMarker.remove();
+  const el = document.createElement('div');
+  el.className = 'producer-highlight-marker';
+  _highlightMarker = new maplibregl.Marker({ element: el })
+    .setLngLat([p.lon, p.lat])
+    .addTo(map);
+  map.flyTo({ center: [p.lon, p.lat], zoom: 13.5, speed: 1.2 });
+}
+
+// -------------------------------------------------------
+// Coordinate picker: hide UI chrome, let the user click the map once
+// -------------------------------------------------------
+function pickCoordinateOnMap() {
+  return new Promise((resolve) => {
+    const banner = document.getElementById('map-banner');
+    banner.textContent = 'Click the producer’s location on the map  (Esc to cancel)';
+    banner.hidden = false;
+    map.getCanvas().style.cursor = 'crosshair';
+
+    function cleanup() {
+      map.off('click', onClick);
+      window.removeEventListener('keydown', onKey);
+      banner.hidden = true;
+      map.getCanvas().style.cursor = '';
+    }
+    function onClick(e) {
+      cleanup();
+      resolve({ lat: e.lngLat.lat, lon: e.lngLat.lng });
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') { cleanup(); resolve({ lat: null, lon: null }); }
+    }
+    map.on('click', onClick);
+    window.addEventListener('keydown', onKey);
+  });
 }
 
 // -------------------------------------------------------

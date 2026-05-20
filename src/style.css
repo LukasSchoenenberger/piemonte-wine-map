@@ -556,3 +556,105 @@ h2 {
   letter-spacing: 0.06em;
 }
 .glossary-table .num { text-align: right; }
+.glossary-table .del-cell { width: 22px; text-align: right; }
+
+/* -------------------------------------------------------
+   Search inputs + glossary controls
+-------------------------------------------------------- */
+.search-input {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: #2c1a0e;
+  border: 1px solid #ddd5c8;
+  border-radius: 4px;
+  background: #fff;
+}
+.glossary-controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.glossary-controls .search-input { margin-bottom: 0; flex: 1; }
+.glossary-controls select {
+  font-size: 12px;
+  border: 1px solid #ddd5c8;
+  border-radius: 4px;
+  background: #fff;
+  padding: 0 6px;
+}
+
+/* Delete buttons */
+.wine-del {
+  border: none;
+  background: none;
+  color: #b87a7a;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 2px;
+}
+.wine-del:hover { color: #b03030; }
+
+.danger-btn {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding: 9px;
+  font-size: 12px;
+  color: #b03030;
+  background: #faf0ee;
+  border: 1px solid #e6c5c0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.danger-btn:hover { background: #f5e3e0; }
+
+.secondary-btn {
+  padding: 8px;
+  font-size: 12px;
+  color: #5a3e2c;
+  background: #f0e9df;
+  border: 1px solid #ddd5c8;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.secondary-btn:hover { background: #e6dccc; }
+
+/* -------------------------------------------------------
+   Producer search highlight marker (pulsing ring)
+-------------------------------------------------------- */
+.producer-highlight-marker {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(176, 48, 48, 0.85);
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 rgba(176, 48, 48, 0.6);
+  animation: producer-pulse 1.6s ease-out infinite;
+}
+@keyframes producer-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(176, 48, 48, 0.55); }
+  70%  { box-shadow: 0 0 0 18px rgba(176, 48, 48, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(176, 48, 48, 0); }
+}
+
+/* -------------------------------------------------------
+   Map banner (coordinate picker prompt)
+-------------------------------------------------------- */
+#map-banner {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 500;
+  background: rgba(44, 26, 14, 0.9);
+  color: #faf7f2;
+  font-size: 13px;
+  padding: 9px 16px;
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+#map-banner[hidden] { display: none; }
