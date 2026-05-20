@@ -170,3 +170,75 @@ export async function upsertRating(wineId, score) {
     .upsert({ wine_id: wineId, user_id: uid, score }, { onConflict: 'wine_id,user_id' });
   if (error) throw error;
 }
+
+// -------------------------------------------------------
+// Homebase (per-user, private)
+// -------------------------------------------------------
+const AVATAR_MAX = 125;   // 5 large stars
+const POINT_COL = { white: 'points_white', rose: 'points_rose', red: 'points_red' };
+
+export async function getHomebase() {
+  const uid = await getMyUserId();
+  const { data } = await supabase
+    .from('homebase')
+    .select('points_white, points_rose, points_red')
+    .eq('user_id', uid)
+    .maybeSingle();
+  return data ?? { points_white: 0, points_rose: 0, points_red: 0 };
+}
+
+// Add points to one colour track (glass = 1, bottle = 5), capped at the max.
+// Returns the new value for that colour.
+export async function addAvatarPoints(color, delta) {
+  const uid = await getMyUserId();
+  const hb = await getHomebase();
+  const col = POINT_COL[color];
+  if (!col) throw new Error(`Unknown colour: ${color}`);
+  const next = Math.min(AVATAR_MAX, (hb[col] ?? 0) + delta);
+  const row = {
+    user_id: uid,
+    points_white: hb.points_white,
+    points_rose: hb.points_rose,
+    points_red: hb.points_red,
+  };
+  row[col] = next;
+  const { error } = await supabase.from('homebase').upsert(row, { onConflict: 'user_id' });
+  if (error) throw error;
+  return next;
+}
+
+// -------------------------------------------------------
+// Fridge cellar (per-user, linked to shared glossary wines)
+// -------------------------------------------------------
+export async function listFridge() {
+  const uid = await getMyUserId();
+  const { data, error } = await supabase
+    .from('fridge_wines')
+    .select('id, price, wines(name, year, producers(name))')
+    .eq('user_id', uid)
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return data;
+}
+
+export async function addFridgeWine(wineId, price) {
+  const uid = await getMyUserId();
+  const { error } = await supabase
+    .from('fridge_wines')
+    .insert({ user_id: uid, wine_id: wineId, price });
+  if (error) throw error;
+}
+
+export async function deleteFridgeWine(id) {
+  const { error } = await supabase.from('fridge_wines').delete().eq('id', id);
+  if (error) throw error;
+}
+
+// -------------------------------------------------------
+// Podium (leaderboard) — aggregate star counts for all users
+// -------------------------------------------------------
+export async function getLeaderboard() {
+  const { data, error } = await supabase.rpc('leaderboard');
+  if (error) throw error;
+  return data;
+}

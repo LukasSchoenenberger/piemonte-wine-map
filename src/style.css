@@ -658,3 +658,148 @@ h2 {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
 #map-banner[hidden] { display: none; }
+
+/* -------------------------------------------------------
+   Homebase
+-------------------------------------------------------- */
+.homebase-btn {
+  font-family: Georgia, 'Times New Roman', serif;
+  letter-spacing: 0.06em;
+  background: #ede3d0;
+}
+.link-btn {
+  background: none;
+  border: none;
+  color: #5a3e2c;
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+.hb-top {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.hb-target {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1.5px dashed #d8cdbb;
+  border-radius: 8px;
+  transition: background 0.12s, border-color 0.12s;
+}
+.hb-target.hb-drop-hover {
+  background: #f3ece0;
+  border-color: #b89b6a;
+}
+.hb-icon { flex-shrink: 0; }
+
+.hb-stars { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.hb-star-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.hb-star-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  width: 34px;
+  flex-shrink: 0;
+}
+.hb-star-group { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 1px; }
+.hb-star { vertical-align: middle; }
+.hb-nostar { font-size: 10px; color: #b0a392; }
+
+.hb-fridge-info { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+
+.hb-tokens {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 0;
+  border-top: 1px solid #e8e0d5;
+}
+.hb-token-row { display: flex; align-items: center; gap: 10px; }
+.hb-token-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9a8070;
+  width: 56px;
+  flex-shrink: 0;
+}
+.hb-token {
+  cursor: grab;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background 0.12s;
+}
+.hb-token:hover { background: #f0e9df; }
+.hb-token:active { cursor: grabbing; }
+
+.hb-hint { font-size: 11px; color: #9a8070; margin-bottom: 8px; }
+.hb-poor {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: #8a7060;
+  text-align: center;
+  padding: 12px;
+}
+.hb-note { font-size: 12px; color: #5a3e2c; padding: 8px 0; }
+.hb-form { margin-top: 8px; }
+
+/* -------------------------------------------------------
+   Podium (leaderboard)
+-------------------------------------------------------- */
+#modal:has(.podium-grid) { width: 820px; }
+.podium-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.podium-head {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: normal;
+  color: #5a3e2c;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+  border-bottom: 2px solid #ccc;
+}
+.podium-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.podium-list li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+.podium-rank {
+  width: 15px;
+  flex-shrink: 0;
+  text-align: right;
+  color: #b0a392;
+}
+.podium-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #2c1a0e;
+}
+.podium-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-weight: bold;
+  color: #5a3e2c;
+  flex-shrink: 0;
+}

@@ -36,11 +36,11 @@ export function initWineUI({ onProducersChanged, pickCoordinate } = {}) {
 // -------------------------------------------------------
 // Modal helpers
 // -------------------------------------------------------
-function openModal(html) {
+export function openModal(html) {
   modalContent.innerHTML = html;
   modalOverlay.hidden = false;
 }
-function closeModal() {
+export function closeModal() {
   modalOverlay.hidden = true;
   modalContent.innerHTML = '';
 }

@@ -7,6 +7,7 @@ const { initUI, showInfo } = await import(`./ui.js?v=${_v}`);
 const { getSession, signIn, signOut, getMyDisplayName, listProducers }
   = await import(`./db.js?v=${_v}`);
 const { initWineUI, showProducerPanel } = await import(`./wineui.js?v=${_v}`);
+const { initHomebase } = await import(`./homebase.js?v=${_v}`);
 
 // Map center: Langhe hills, midpoint between Barolo and Barbaresco
 const CENTER  = [7.980, 44.630];
@@ -80,9 +81,11 @@ async function tryInit() {
   attachClickHandlers(results);
   initWineUI({ onProducersChanged: reloadProducers, pickCoordinate: pickCoordinateOnMap });
   initProducerSearch();
+  initHomebase();
 
   // Reveal the authed UI
   loginOverlay.hidden = true;
+  document.getElementById('homebase-section').hidden = false;
   document.getElementById('wine-actions').hidden = false;
   document.getElementById('producer-actions').hidden = false;
 
