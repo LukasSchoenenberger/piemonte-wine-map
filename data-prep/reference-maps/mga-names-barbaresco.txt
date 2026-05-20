@@ -1,0 +1,80 @@
+# Official Barbaresco MGA names by commune
+# Source: Consorzio di Tutela Barolo Barbaresco Alba Langhe e Roero (2010)
+# 66 MGAs total across 4 communes.
+
+## Barbaresco (approx. 22 MGAs)
+Asili
+Ausario
+Bricco di Neive
+Cole
+Curra
+Faset
+Giacone
+Giacosa
+Moccagatta
+Montefico
+Montestefano
+Muncagota
+Nervo
+Ovello
+Pajé
+Pora
+Rabajà
+Rabajà-Bas
+Rio Sordo
+Roncaglie
+Roncagliette
+Secondine
+Tre Stelle
+
+## Neive (approx. 26 MGAs)
+Albesani
+Balluri
+Basarin
+Bordini
+Bricco di Neive
+Ca' Nova
+Canova
+Chica
+Cottà
+Currà
+Del Comune di Neive
+Donovan
+Fausoni
+Ferrere
+Gallina
+Gaia-Principe
+Marcorino
+Marcarini
+Messoirano
+Montaribaldi
+Rivetti
+Rombone
+San Cristoforo
+Serraboella
+Serracapelli
+Starderi
+
+## Treiso (approx. 16 MGAs)
+Ausario
+Bricco di Treiso
+Casot
+Ferrere
+Giacone
+Marcarini
+Manzola
+Nervo
+Nubiola
+Pajorè
+Rizzi
+Rombone
+Roncagliette
+San Stunet
+Secondine
+Valeirano
+
+## Alba — San Rocco Seno d'Elvio (approx. 4 MGAs)
+Del Comune di Alba
+Manzola
+Rizzi
+San Rocco Seno d'Elvio

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Piemonte Wine Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.css">
+  <!-- Cache-bust the stylesheet too (the browser otherwise serves a stale
+       style.css across edits even when the cache-busted JS reloads). -->
+  <script>
+    document.write('<link rel="stylesheet" href="src/style.css?v=' + Date.now() + '">');
+  </script>
+</head>
+<body>
+  <div id="app">
+    <aside id="sidebar">
+      <div id="sidebar-inner">
+        <header>
+          <h1>Piemonte</h1>
+          <p class="subtitle">Wine Region Explorer</p>
+        </header>
+
+        <section class="sidebar-section" id="layer-section">
+          <h2>Layers</h2>
+          <div id="layer-toggles"></div>
+        </section>
+
+        <section class="sidebar-section" id="wine-actions" hidden>
+          <h2>Wines</h2>
+          <button class="wine-btn" id="btn-add-wine">+ Add wine</button>
+          <button class="wine-btn" id="btn-rate-wine">Rate wine</button>
+          <button class="wine-btn" id="btn-glossary">Show wine glossary</button>
+        </section>
+
+        <section class="sidebar-section" id="info-panel" hidden>
+          <h2 id="info-title"></h2>
+          <div id="info-content"></div>
+          <button id="info-close">Back to layers</button>
+        </section>
+
+        <footer id="credits">
+          Data: OpenStreetMap contributors, ISTAT, Piemonte Geoportale<br>
+          Map: OpenFreeMap &middot; MapLibre GL JS
+          <div id="account-row" hidden>
+            <span id="account-name"></span>
+            <button id="btn-signout">Sign out</button>
+          </div>
+        </footer>
+      </div>
+    </aside>
+
+    <div id="map"></div>
+  </div>
+
+  <!-- Login gate -->
+  <div id="login-overlay">
+    <form id="login-form">
+      <h1>Piemonte</h1>
+      <p class="login-subtitle">Wine Region Explorer</p>
+      <input type="email" id="login-email" placeholder="Email" autocomplete="username" required>
+      <input type="password" id="login-password" placeholder="Password" autocomplete="current-password" required>
+      <button type="submit" id="login-submit">Sign in</button>
+      <p id="login-error" class="login-error" hidden></p>
+    </form>
+  </div>
+
+  <!-- Generic modal for Add wine / Rate wine / Glossary -->
+  <div id="modal-overlay" hidden>
+    <div id="modal">
+      <button id="modal-close" aria-label="Close">&times;</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.js"></script>
+  <script type="module">
+    // Cache-bust local ES modules — the browser otherwise pins them across
+    // edits even after a hard refresh. The version param propagates so
+    // main.js can apply the same buster to its own imports.
+    import(`./src/main.js?v=${Date.now()}`);
+  </script>
+</body>
+</html>

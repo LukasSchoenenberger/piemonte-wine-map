@@ -1,0 +1,242 @@
+[
+  {
+    "name": "Alba",
+    "docg": "Barbaresco, (partial \u2014 San Rocco Seno d'Elvio only)",
+    "centroid": {
+      "lon": 8.030133,
+      "lat": 44.688035
+    },
+    "bbox_sw": {
+      "lon": 7.966366,
+      "lat": 44.637984
+    },
+    "bbox_ne": {
+      "lon": 8.098521,
+      "lat": 44.734336
+    }
+  },
+  {
+    "name": "Barbaresco",
+    "docg": "Barbaresco",
+    "centroid": {
+      "lon": 8.076875,
+      "lat": 44.719744
+    },
+    "bbox_sw": {
+      "lon": 8.057296,
+      "lat": 44.700569
+    },
+    "bbox_ne": {
+      "lon": 8.093776,
+      "lat": 44.740227
+    }
+  },
+  {
+    "name": "Barolo",
+    "docg": "Barolo",
+    "centroid": {
+      "lon": 7.941331,
+      "lat": 44.615742
+    },
+    "bbox_sw": {
+      "lon": 7.919005,
+      "lat": 44.59959
+    },
+    "bbox_ne": {
+      "lon": 7.960439,
+      "lat": 44.627841
+    }
+  },
+  {
+    "name": "Castiglione Falletto",
+    "docg": "Barolo",
+    "centroid": {
+      "lon": 7.973194,
+      "lat": 44.629738
+    },
+    "bbox_sw": {
+      "lon": 7.959693,
+      "lat": 44.616927
+    },
+    "bbox_ne": {
+      "lon": 7.986242,
+      "lat": 44.648722
+    }
+  },
+  {
+    "name": "Cherasco",
+    "docg": "Barolo",
+    "centroid": {
+      "lon": 7.83225,
+      "lat": 44.645356
+    },
+    "bbox_sw": {
+      "lon": 7.749628,
+      "lat": 44.586337
+    },
+    "bbox_ne": {
+      "lon": 7.904667,
+      "lat": 44.694537
+    }
+  },
+  {
+    "name": "Diano d'Alba",
+    "docg": "Barolo",
+    "centroid": {
+      "lon": 8.025192,
+      "lat": 44.648694
+    },
+    "bbox_sw": {
+      "lon": 7.978911,
+      "lat": 44.628156
+    },
+    "bbox_ne": {
+      "lon": 8.081018,
+      "lat": 44.674155
+    }
+  },
+  {
+    "name": "Grinzane Cavour",
+    "docg": "Barolo",
+    "centroid": {
+      "lon": 7.994167,
+      "lat": 44.659644
+    },
+    "bbox_sw": {
+      "lon": 7.980131,
+      "lat": 44.649789
+    },
+    "bbox_ne": {
+      "lon": 8.010674,
+      "lat": 44.671323
+    }
+  },
+  {
+    "name": "La Morra",
+    "docg": "Barolo",
+    "centroid": {
+      "lon": 7.931341,
+      "lat": 44.647421
+    },
+    "bbox_sw": {
+      "lon": 7.895475,
+      "lat": 44.619177
+    },
+    "bbox_ne": {
+      "lon": 7.972856,
+      "lat": 44.685616
+    }
+  },
+  {
+    "name": "Monforte d'Alba",
+    "docg": "Barolo",
+    "centroid": {
+      "lon": 7.970317,
+      "lat": 44.586212
+    },
+    "bbox_sw": {
+      "lon": 7.931986,
+      "lat": 44.556288
+    },
+    "bbox_ne": {
+      "lon": 8.005298,
+      "lat": 44.621549
+    }
+  },
+  {
+    "name": "Neive",
+    "docg": "Barbaresco",
+    "centroid": {
+      "lon": 8.115828,
+      "lat": 44.727639
+    },
+    "bbox_sw": {
+      "lon": 8.075062,
+      "lat": 44.697213
+    },
+    "bbox_ne": {
+      "lon": 8.15223,
+      "lat": 44.756962
+    }
+  },
+  {
+    "name": "Novello",
+    "docg": "Barolo",
+    "centroid": {
+      "lon": 7.920086,
+      "lat": 44.59084
+    },
+    "bbox_sw": {
+      "lon": 7.894844,
+      "lat": 44.567672
+    },
+    "bbox_ne": {
+      "lon": 7.950775,
+      "lat": 44.609555
+    }
+  },
+  {
+    "name": "Roddi",
+    "docg": "Barolo",
+    "centroid": {
+      "lon": 7.965527,
+      "lat": 44.6789
+    },
+    "bbox_sw": {
+      "lon": 7.93686,
+      "lat": 44.659307
+    },
+    "bbox_ne": {
+      "lon": 7.99398,
+      "lat": 44.691492
+    }
+  },
+  {
+    "name": "Serralunga d'Alba",
+    "docg": "Barolo",
+    "centroid": {
+      "lon": 7.996325,
+      "lat": 44.616165
+    },
+    "bbox_sw": {
+      "lon": 7.977538,
+      "lat": 44.586899
+    },
+    "bbox_ne": {
+      "lon": 8.010759,
+      "lat": 44.647959
+    }
+  },
+  {
+    "name": "Treiso",
+    "docg": "Barbaresco",
+    "centroid": {
+      "lon": 8.085045,
+      "lat": 44.689247
+    },
+    "bbox_sw": {
+      "lon": 8.060447,
+      "lat": 44.658084
+    },
+    "bbox_ne": {
+      "lon": 8.104043,
+      "lat": 44.709374
+    }
+  },
+  {
+    "name": "Verduno",
+    "docg": "Barolo",
+    "centroid": {
+      "lon": 7.932092,
+      "lat": 44.67244
+    },
+    "bbox_sw": {
+      "lon": 7.914122,
+      "lat": 44.656417
+    },
+    "bbox_ne": {
+      "lon": 7.956176,
+      "lat": 44.689726
+    }
+  }
+]

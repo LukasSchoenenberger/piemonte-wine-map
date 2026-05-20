@@ -1,0 +1,197 @@
+# Official Barolo MGA names by commune
+# Source: Consorzio di Tutela Barolo Barbaresco Alba Langhe e Roero (2010)
+# Use these exactly as the 'name' attribute when digitizing.
+# 181 MGAs total across 11 communes.
+
+## La Morra (approx. 30 MGAs)
+Annunziata
+Arborina
+Ascheri
+Berri
+Boiolo
+Bricco Chiesa
+Bricco Luciani
+Brunate
+Capalot
+Case Nere
+Castagni
+Cerequio
+Coste di Vergne
+Cre (Ciocchini)
+Crosia
+Ferraton
+Fossati
+Gallinetto
+Gancia
+Gattera
+Giachini
+La Serra
+Manzoni Soprani
+Monfalletto
+Monghisolfo
+Nuovo
+Pozzo
+Ravera di La Morra
+Roncaglie
+Rocche dell'Annunziata
+Rive
+Ruè
+Santa Maria
+Sarmassa
+Serradenari
+Torriglione
+Verzuolo
+
+## Barolo (approx. 15 MGAs)
+Altenasso
+Bricco delle Viole
+Brunella
+Cannubi
+Cannubi Boschis
+Cannubi Muscatel
+Cannubi San Lorenzo
+Cannubi Valletta
+Coste di Rose
+Del Comune di Barolo
+Fossati
+La Volta
+Le Coste di Barolo
+Lista
+Preda
+San Lorenzo di Barolo
+San Pietro
+Sarmassa
+Terlo
+Vignane
+Zoccolaio
+
+## Castiglione Falletto (approx. 12 MGAs)
+Bricco Boschis
+Bricco Rocche (Brunella)
+Codana
+Fiasco
+Mariondino
+Monprivato
+Parussi
+Pernanno
+Perno
+Rocche di Castiglione
+Valentino
+Villero
+
+## Serralunga d'Alba (approx. 35 MGAs)
+Arione
+Badarina
+Bassa
+Boscareto
+Briccolina
+Cappallotto
+Cerretta
+Cerrati
+Collaretto
+Damiano
+Della Rocca
+Falletto
+Francia
+Gabutti
+Gianetto
+Lazzarito
+Lazzairasco
+Lirano
+Mandorlo
+Marenca
+Margheria
+Ornato
+Parafada
+Prapò
+Pugnane
+Riondino
+Riva Rocca
+San Bernardo
+San Rocco Seno d'Elvio
+Seriolo
+Serra
+Sorano
+Vignarionda (Vigna Rionda)
+Voghera Brea
+Zona Lomondo
+
+## Monforte d'Alba (approx. 30 MGAs)
+Bricco Ambrogio
+Bricco San Pietro
+Bricco Visette
+Bricotto
+Bussia
+Castelletto
+Ciocchini
+Colombaro
+Disa
+Fantini
+Garretti
+Ginestra
+Gramolere
+Le Coste di Monforte
+Manzoni Soprani
+Munie
+Pressenda
+Ravera di Monforte
+Le Munie
+Le Turne
+Mosconi
+Perno
+Pianpolvere Soprano
+Pugnane
+Rocche di Castiglione
+Santo Stefano di Perno
+Sori di Baudana
+Torrone
+
+## Novello (approx. 12 MGAs)
+Bergera-Pezzole
+Cerviano-Merli
+Ciocchini
+Corini-Pallaretta
+Ele
+Gabbetto
+Gustava
+Manzoni Soprani
+Ravera
+Sottocastello di Novello
+Terlo
+
+## Verduno (approx. 8 MGAs)
+Boscatto
+Breri
+Budin
+Campette
+Massara
+Montefico
+Neirane
+Riva del Bric
+San Lorenzo di Verduno
+Sotto Castello di Verduno
+
+## Grinzane Cavour (approx. 8 MGAs)
+Canova
+Castle Grinzane
+Garrette
+Le Manche
+Monteverduno
+Rastel
+Torriglione
+Valgrande
+
+## Diano d'Alba (approx. 4 MGAs)
+Del Comune di Diano d'Alba
+Lazzarasco
+Montanello
+Sorì Diano
+
+## Roddi (approx. 3 MGAs)
+Bricco Ambrogio
+Del Comune di Roddi
+Rodaschio
+
+## Cherasco (approx. 2 MGAs)
+Del Comune di Cherasco
+Pugnane

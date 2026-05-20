@@ -1,0 +1,558 @@
+/* -------------------------------------------------------
+   Base reset
+-------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+  color: #2c1a0e;
+  background: #faf7f2;
+}
+
+/* -------------------------------------------------------
+   App shell
+-------------------------------------------------------- */
+#app {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* -------------------------------------------------------
+   Sidebar
+-------------------------------------------------------- */
+#sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  background: #faf7f2;
+  border-right: 1px solid #ddd5c8;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+#sidebar-inner {
+  padding: 24px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+/* -------------------------------------------------------
+   Header
+-------------------------------------------------------- */
+header {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ddd5c8;
+}
+
+header h1 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 22px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #2c1a0e;
+  font-weight: normal;
+}
+
+.subtitle {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #9a8070;
+  margin-top: 3px;
+}
+
+/* -------------------------------------------------------
+   Section titles
+-------------------------------------------------------- */
+.sidebar-section {
+  margin-top: 20px;
+}
+
+h2 {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #9a8070;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #e8e0d5;
+  font-weight: normal;
+}
+
+/* -------------------------------------------------------
+   Layer toggles
+-------------------------------------------------------- */
+#layer-toggles {
+  display: flex;
+  flex-direction: column;
+}
+
+.layer-toggle {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 0;
+  cursor: pointer;
+  font-size: 12.5px;
+  color: #2c1a0e;
+  border-bottom: 1px solid #f0ece4;
+  line-height: 1;
+  user-select: none;
+}
+
+.layer-toggle:last-child {
+  border-bottom: none;
+}
+
+.layer-toggle.unavailable {
+  opacity: 0.38;
+  cursor: default;
+}
+
+.layer-toggle input[type="checkbox"] {
+  width: 13px;
+  height: 13px;
+  cursor: pointer;
+  accent-color: #5a3e2c;
+  flex-shrink: 0;
+}
+
+.layer-toggle.unavailable input[type="checkbox"] {
+  cursor: default;
+}
+
+.swatch {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.layer-label {
+  flex: 1;
+}
+
+.badge-nodata {
+  font-size: 8.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #b0a090;
+  background: #ede8e0;
+  padding: 2px 5px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* -------------------------------------------------------
+   Info panel (feature click)
+-------------------------------------------------------- */
+#info-panel h2 {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #5a3e2c;
+  border-bottom-color: #c8b8a8;
+  margin-bottom: 10px;
+}
+
+#info-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 15px;
+  font-weight: normal;
+  text-transform: none;
+  letter-spacing: 0;
+  color: #2c1a0e;
+  margin-bottom: 12px;
+  line-height: 1.4;
+  border-bottom: 1px solid #e8e0d5;
+  padding-bottom: 8px;
+}
+
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.info-table th,
+.info-table td {
+  text-align: left;
+  padding: 5px 0;
+  vertical-align: top;
+  border-bottom: 1px solid #f0ece4;
+}
+
+.info-table th {
+  color: #9a8070;
+  font-weight: normal;
+  width: 45%;
+  padding-right: 8px;
+}
+
+.info-table td {
+  color: #2c1a0e;
+}
+
+.info-empty {
+  color: #b0a090;
+  font-size: 12px;
+  font-style: italic;
+}
+
+#info-close {
+  margin-top: 14px;
+  display: block;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd5c8;
+  background: none;
+  border-radius: 4px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: #5a3e2c;
+  transition: background 0.15s;
+}
+
+#info-close:hover {
+  background: #f0ece4;
+}
+
+/* -------------------------------------------------------
+   Credits footer
+-------------------------------------------------------- */
+#credits {
+  margin-top: auto;
+  padding-top: 20px;
+  font-size: 10px;
+  color: #b8a898;
+  line-height: 1.7;
+}
+
+/* -------------------------------------------------------
+   Map container
+-------------------------------------------------------- */
+#map {
+  flex: 1;
+  height: 100%;
+}
+
+/* Tighten MapLibre attribution */
+.maplibregl-ctrl-attrib {
+  font-size: 10px !important;
+}
+
+/* -------------------------------------------------------
+   Wine action buttons
+-------------------------------------------------------- */
+.wine-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 9px 12px;
+  margin-bottom: 7px;
+  font-size: 12px;
+  color: #3d2b1a;
+  background: #f0e9df;
+  border: 1px solid #ddd5c8;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.wine-btn:hover { background: #e6dccc; }
+
+/* -------------------------------------------------------
+   Account row (sign out)
+-------------------------------------------------------- */
+#account-row {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #e8e0d5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+#account-name {
+  font-size: 11px;
+  color: #5a3e2c;
+  font-weight: bold;
+}
+#btn-signout {
+  font-size: 10px;
+  color: #9a8070;
+  background: none;
+  border: 1px solid #ddd5c8;
+  border-radius: 3px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+#btn-signout:hover { background: #ede8e0; }
+
+/* -------------------------------------------------------
+   Login overlay
+-------------------------------------------------------- */
+#login-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(44, 26, 14, 0.55);
+  backdrop-filter: blur(4px);
+}
+#login-overlay[hidden] { display: none; }
+
+#login-form {
+  background: #faf7f2;
+  padding: 36px 32px;
+  border-radius: 8px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+#login-form h1 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 24px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: normal;
+  color: #2c1a0e;
+}
+.login-subtitle {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #9a8070;
+  margin: 4px 0 20px;
+}
+#login-form input {
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  border: 1px solid #ddd5c8;
+  border-radius: 4px;
+  background: #fff;
+}
+#login-form button {
+  padding: 10px;
+  font-size: 13px;
+  color: #faf7f2;
+  background: #5a3e2c;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+#login-form button:hover { background: #6f4d37; }
+#login-form button:disabled { opacity: 0.6; cursor: default; }
+.login-error {
+  color: #b03030;
+  font-size: 11px;
+  margin-top: 10px;
+}
+
+/* -------------------------------------------------------
+   Modal (Add wine / Rate wine / Glossary)
+-------------------------------------------------------- */
+#modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(44, 26, 14, 0.45);
+}
+#modal-overlay[hidden] { display: none; }
+#modal {
+  position: relative;
+  background: #faf7f2;
+  padding: 26px 28px;
+  border-radius: 8px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  width: 440px;
+  max-width: 92vw;
+  max-height: 86vh;
+  overflow-y: auto;
+}
+#modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 22px;
+  line-height: 1;
+  color: #9a8070;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+#modal h2 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 17px;
+  font-weight: normal;
+  text-transform: none;
+  letter-spacing: 0;
+  color: #2c1a0e;
+  border-bottom: 1px solid #e8e0d5;
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+}
+
+/* -------------------------------------------------------
+   Forms (modal + inline)
+-------------------------------------------------------- */
+.wine-form { display: flex; flex-direction: column; }
+.wine-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+  color: #9a8070;
+  margin-bottom: 12px;
+  gap: 4px;
+}
+.wine-form input,
+.wine-form select {
+  padding: 8px;
+  font-size: 13px;
+  color: #2c1a0e;
+  border: 1px solid #ddd5c8;
+  border-radius: 4px;
+  background: #fff;
+}
+.wine-form .coord-row {
+  display: flex;
+  gap: 10px;
+}
+.wine-form .coord-row label { flex: 1; }
+.wine-form button {
+  padding: 10px;
+  font-size: 13px;
+  color: #faf7f2;
+  background: #5a3e2c;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 4px;
+}
+.wine-form button:hover { background: #6f4d37; }
+.wine-form input[type="range"] { padding: 0; }
+.modal-error { color: #b03030; font-size: 11px; margin-top: 8px; }
+.modal-empty { color: #9a8070; font-size: 12px; }
+#aw-new {
+  border: 1px solid #e8e0d5;
+  border-radius: 4px;
+  padding: 12px 12px 0;
+  margin-bottom: 12px;
+  background: #f3eee6;
+}
+
+/* -------------------------------------------------------
+   Producer panel: wines list
+-------------------------------------------------------- */
+.panel-subhead {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #9a8070;
+  font-weight: normal;
+  margin: 16px 0 8px;
+}
+.wine-list { list-style: none; }
+.wine-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 4px;
+  border-bottom: 1px solid #f0ece4;
+  cursor: pointer;
+  font-size: 13px;
+}
+.wine-item:hover { background: #f0e9df; }
+.wine-item-name { color: #2c1a0e; }
+.wine-year { color: #9a8070; font-size: 11px; }
+.wine-item-avg {
+  font-size: 12px;
+  color: #5a3e2c;
+  font-weight: bold;
+  min-width: 26px;
+  text-align: right;
+}
+
+/* -------------------------------------------------------
+   Ratings bar chart
+-------------------------------------------------------- */
+.producer-back {
+  font-size: 11px;
+  color: #9a8070;
+  cursor: pointer;
+  margin-bottom: 6px;
+}
+.producer-back:hover { color: #5a3e2c; }
+.rating-chart { display: flex; flex-direction: column; gap: 6px; }
+.rating-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.rating-name {
+  width: 70px;
+  flex-shrink: 0;
+  color: #5a3e2c;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rating-track {
+  flex: 1;
+  height: 12px;
+  background: #ece5da;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.rating-fill {
+  display: block;
+  height: 100%;
+  background: #8a5a3c;
+}
+.rating-score {
+  width: 20px;
+  text-align: right;
+  color: #2c1a0e;
+  font-weight: bold;
+}
+
+/* -------------------------------------------------------
+   Glossary table
+-------------------------------------------------------- */
+.glossary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.glossary-table th,
+.glossary-table td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid #f0ece4;
+}
+.glossary-table th {
+  color: #9a8070;
+  font-weight: normal;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.glossary-table .num { text-align: right; }
